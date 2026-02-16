@@ -1,0 +1,11 @@
+# Magic Apron POC — Google Cloud
+# Core (data generation needs only stdlib + no deps for CSV/MD)
+# For upload and search:
+google-cloud-storage>=2.14.0
+google-cloud-discoveryengine>=0.11.0
+# RAG Engine (ragCorpora) + Gemini
+google-cloud-aiplatform>=1.38.0
+# FastAPI backend
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.0.0

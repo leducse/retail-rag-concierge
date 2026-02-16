@@ -1,0 +1,13 @@
+# Don't ship these into the image
+venv/
+.venv/
+__pycache__/
+*.pyc
+.git/
+.github/
+.env
+.keys/
+*.md
+data/
+docs/
+magic-apron-poc/

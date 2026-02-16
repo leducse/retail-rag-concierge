@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Magic Apron — Home Improvement Concierge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --text: #e6edf3;
+      --muted: #8b9eb0;
+      --accent: #f97316;
+      --accent-dim: #ea580c;
+      --success: #22c55e;
+      --error: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem;
+    }
+    .container {
+      width: 100%;
+      max-width: 640px;
+    }
+    h1 {
+      font-family: "Fraunces", serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0 0 0.25rem 0;
+      color: var(--text);
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    textarea {
+      width: 100%;
+      min-height: 88px;
+      padding: 0.75rem;
+      font: inherit;
+      font-size: 1rem;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid #2d3a4d;
+      border-radius: 8px;
+      resize: vertical;
+    }
+    textarea::placeholder { color: var(--muted); }
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding: 0.65rem 1.25rem;
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--accent-dim); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .answer-box {
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.55;
+      margin: 0;
+    }
+    .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.75rem;
+    }
+    .meta span { margin-right: 1rem; }
+    .error {
+      color: var(--error);
+      font-size: 0.9rem;
+    }
+    .citations {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #2d3a4d;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .citations strong { color: var(--text); }
+    .citation-item {
+      margin-top: 0.75rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #2d3a4d;
+    }
+    .citation-item:last-child { border-bottom: none; }
+    .citation-num { color: var(--accent); font-weight: 600; margin-right: 0.25rem; }
+    .citation-title { color: var(--text); font-weight: 600; }
+    .citation-snippet {
+      margin: 0.35rem 0 0 1rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .citation-uri {
+      display: block;
+      margin-top: 0.25rem;
+      margin-left: 1rem;
+      color: var(--muted);
+      opacity: 0.85;
+      font-size: 0.75rem;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Magic Apron</h1>
+    <p class="subtitle">RAG-powered home improvement assistant — ask about products and how-to guides.</p>
+
+    <div class="card">
+      <label for="query">Ask a question</label>
+      <textarea id="query" placeholder="e.g. What do I need to fix a leaky faucet? Where are LED bulbs?"></textarea>
+      <button type="button" class="btn" id="ask">Ask Magic Apron</button>
+    </div>
+
+    <div class="card" id="result-card" style="display: none;">
+      <label>Answer</label>
+      <p class="answer-box" id="answer"></p>
+      <p class="meta" id="meta"></p>
+      <div class="citations" id="citations"></div>
+    </div>
+
+    <div class="card" id="error-card" style="display: none;">
+      <p class="error" id="error-msg"></p>
+    </div>
+  </div>
+
+  <footer>
+    Portfolio project: Vertex AI Search (GCP) · RAG · <a href="/docs">API docs</a>
+  </footer>
+
+  <script>
+    const queryEl = document.getElementById("query");
+    const askBtn = document.getElementById("ask");
+    const resultCard = document.getElementById("result-card");
+    const errorCard = document.getElementById("error-card");
+    const answerEl = document.getElementById("answer");
+    const metaEl = document.getElementById("meta");
+    const citationsEl = document.getElementById("citations");
+    const errorMsgEl = document.getElementById("error-msg");
+
+    function hideAll() {
+      resultCard.style.display = "none";
+      errorCard.style.display = "none";
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement("div");
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    askBtn.addEventListener("click", async () => {
+      const q = queryEl.value.trim();
+      if (!q) return;
+      hideAll();
+      askBtn.disabled = true;
+      askBtn.textContent = "Searching…";
+
+      try {
+        const res = await fetch("/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: q }),
+        });
+        const text = await res.text();
+        let data;
+        try {
+          data = text ? JSON.parse(text) : {};
+        } catch (_) {
+          errorMsgEl.textContent = res.ok ? "Invalid response" : (text || res.statusText || "Request failed");
+          errorCard.style.display = "block";
+          return;
+        }
+
+        if (!res.ok) {
+          errorMsgEl.textContent = data.detail || text || res.statusText || "Request failed";
+          errorCard.style.display = "block";
+          return;
+        }
+
+        answerEl.textContent = data.summary_text || "No answer returned.";
+        metaEl.innerHTML = `<span>${data.latency_ms} ms</span><span>${data.results_count} results</span>`;
+        if (data.citations && data.citations.length) {
+          citationsEl.innerHTML = "<strong>Sources</strong>" + data.citations.map((c, i) => {
+            if (typeof c === "object" && c !== null) {
+              const title = c.title || c.uri?.split("/").pop() || `Source ${i + 1}`;
+              const text = c.text || "";
+              const snippet = text.length > 200 ? text.slice(0, 200).trim() + "…" : text;
+              const uri = c.uri || "";
+              const snippetHtml = snippet ? `<p class="citation-snippet">${escapeHtml(snippet).replace(/\n/g, "<br>")}</p>` : "";
+              return `<div class="citation-item"><span class="citation-num">[${i + 1}]</span> <span class="citation-title">${escapeHtml(title)}</span>${snippetHtml}${uri ? `<small class="citation-uri">${escapeHtml(uri)}</small>` : ""}</div>`;
+            }
+            return `<div class="citation-item"><span class="citation-num">[${i + 1}]</span> ${escapeHtml(String(c))}</div>`;
+          }).join("");
+          citationsEl.style.display = "block";
+        } else {
+          citationsEl.style.display = "none";
+        }
+        resultCard.style.display = "block";
+      } catch (e) {
+        errorMsgEl.textContent = e.message || "Network error";
+        errorCard.style.display = "block";
+      } finally {
+        askBtn.disabled = false;
+        askBtn.textContent = "Ask Magic Apron";
+      }
+    });
+  </script>
+</body>
+</html>
