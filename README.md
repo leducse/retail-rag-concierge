@@ -1,12 +1,12 @@
-# Magic Apron POC — Google Cloud Learning Project
+# Retail RAG Concierge — Google Cloud Learning Project
 
-This project is a **Digital Concierge** proof-of-concept for home improvement: a RAG-based chatbot that answers questions using a mock product catalog and DIY knowledge base. It includes a **simple frontend** and can be **deployed to Cloud Run** as a portfolio project. All GCP concepts are explained with **AWS equivalents** (S3, Kendra, Bedrock, CloudWatch, etc.).
+This project is a **digital concierge** proof-of-concept for retail: a RAG-based chatbot that answers questions using a mock product catalog and DIY knowledge base. It includes a **simple frontend** and can be **deployed to Cloud Run** as a portfolio project. All GCP concepts are explained with **AWS equivalents** (S3, Kendra, Bedrock, CloudWatch, etc.).
 
 ## Folder structure
 
 ```
 google_cloud/
-  magic_apron/
+  retail-rag-concierge/
     README.md                         ← You are here
     CONCEPTS_AND_ARCHITECTURE.md      ← GCP components and AWS mapping
     MONITORING_SCENARIOS.md           ← Simulated incidents (GCP + AWS refs)
